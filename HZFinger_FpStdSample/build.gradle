@@ -1,7 +1,8 @@
 apply plugin: 'com.android.application'
+apply plugin: 'org.jetbrains.kotlin.android'
 
 android {
-    namespace 'com.HZFinger_FpStdSample' // 替换为您的应用包名
+    namespace 'com.HZFinger_FpStdSample'
     compileSdk 34
 
     defaultConfig {
@@ -35,6 +36,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 }
 
 dependencies {
@@ -45,7 +49,8 @@ dependencies {
     implementation 'androidx.activity:activity:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
     implementation 'com.google.android.material:material:1.10.0'
+    implementation 'androidx.recyclerview:recyclerview:1.3.0'
 
     // 添加必要的新版依赖
-    implementation 'androidx.core:core-ktx:1.6.0' // 如需Kotlin支持
+    implementation 'androidx.core:core-ktx:1.6.0'
 }

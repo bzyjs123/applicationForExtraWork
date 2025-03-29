@@ -40,14 +40,20 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.HZFINGER.HAPI;
 import com.HZFINGER.HostUsb;
 import com.HZFINGER.LAPI;
+import com.HZFinger_FpStdSample.adapter.PersonAdapter;
+import com.HZFinger_FpStdSample.model.Person;
 import com.HZFinger_FpStdSample.view.SignatureView;
 
 import java.io.File;
@@ -70,18 +76,20 @@ public class PersonManagementActivity extends Activity {
     private AutoCompleteTextView spDepartment;
     private TextView tvFingerprint;
     private ImageView ivFingerprint;
-    private Button btnSave;
-    private Button btnDelete;
-    private Button btnClear;
     private Button btnCapture;
-    private Button btnExport;
-    private Button btnImport;
+   /* private Button btnExport;
+    private Button btnImport;*/
     private Button btnSign;
     private ImageView ivSignature;
     private TextView tvSignature;
 
     private NfcAdapter mNfcAdapter;
     private PendingIntent mPendingIntent;
+
+    private RecyclerView rvPersonList;
+    private PersonAdapter adapter;
+    private LinearLayout formContainer;
+    private boolean isEditMode = false;
 
     private HostUsb mHostUSb = null;
 
@@ -113,7 +121,15 @@ public class PersonManagementActivity extends Activity {
         setContentView(R.layout.activity_person_management);
 
         // 初始化数据库
-        dbHelper = new PersonDatabaseHelper(this);
+        if(dbHelper == null) {
+            dbHelper = new PersonDatabaseHelper(this);
+        }
+
+        // 初始化列表
+        rvPersonList = findViewById(R.id.rv_person_list);
+        rvPersonList.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new PersonAdapter(getSampleData());
+        rvPersonList.setAdapter(adapter);
 
         // 初始化API
         m_cLAPI = new LAPI(this);
@@ -137,6 +153,7 @@ public class PersonManagementActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         m_cHAPI.CloseDevice();
+        dbHelper.close();
     }
 
     /**
@@ -149,15 +166,13 @@ public class PersonManagementActivity extends Activity {
         spDepartment = findViewById(R.id.sp_department);
         tvFingerprint = findViewById(R.id.tv_fingerprint);
         ivFingerprint = findViewById(R.id.iv_fingerprint);
-        btnSave = findViewById(R.id.btn_save);
-        btnDelete = findViewById(R.id.btn_delete);
-        btnClear = findViewById(R.id.btn_clear);
+  /*      btnSave = findViewById(R.id.btn_save);
+        btnDelete = findViewById(R.id.btn_delete);*/
         btnCapture = findViewById(R.id.btn_capture);
-        btnExport = findViewById(R.id.btn_export);
-        btnImport = findViewById(R.id.btn_import);
         btnSign = findViewById(R.id.btn_sign);
         ivSignature = findViewById(R.id.iv_signature);
         tvSignature = findViewById(R.id.tv_signature);
+        formContainer = findViewById(R.id.form_container);
     }
 
     /**
@@ -185,61 +200,28 @@ public class PersonManagementActivity extends Activity {
      * 初始化事件监听
      */
     private void initListeners() {
-        // 保存按钮
-        /*btnSave.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                savePerson();
-            }
-        });*/
-
-        // 删除按钮
-        /*btnDelete.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                deletePerson();
-            }
-        });*/
-
-        // 清空按钮
-        btnClear.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearForm();
-            }
-        });
 
         // 采集指纹按钮
-        btnCapture.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (bContinue) {
-                    bContinue = false;
-                    //btnGetImage.setText("GetImage");
-                    m_fpsdkHandle.sendMessage(m_fpsdkHandle.obtainMessage(MESSAGE_SHOW_TEXT, 0, 0, "取消"));
-                    return;
-                }
-                btnCapture.setText(R.string.TEXT_STOP);
-                bContinue = true;
-                btnCapture.setEnabled(false);
-                Runnable r = new Runnable() {
-                    public void run() {
-                        OPEN_DEVICE();
-                        GET_IMAGE();
-                    }
-                };
-                Thread s = new Thread(r);
-                s.start();
+        btnCapture.setOnClickListener(v -> {
+            if (bContinue) {
+                bContinue = false;
+                //btnGetImage.setText("GetImage");
+                m_fpsdkHandle.sendMessage(m_fpsdkHandle.obtainMessage(MESSAGE_SHOW_TEXT, 0, 0, "取消"));
+                return;
             }
+            btnCapture.setText(R.string.TEXT_STOP);
+            bContinue = true;
+            btnCapture.setEnabled(false);
+            Runnable r = () -> {
+                OPEN_DEVICE();
+                GET_IMAGE();
+            };
+            Thread s = new Thread(r);
+            s.start();
         });
 
         // 导出按钮
-        btnExport.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                exportDatabase();
-            }
-        });
+        /*btnExport.setOnClickListener(v -> exportDatabase());*/
 
         // 导入按钮
         /*btnImport.setOnClickListener(new OnClickListener() {
@@ -270,6 +252,13 @@ public class PersonManagementActivity extends Activity {
 
             dialog.show();
         });
+
+        // 按钮事件
+        findViewById(R.id.btn_add).setOnClickListener(v -> showForm(false));
+        findViewById(R.id.btn_edit).setOnClickListener(v -> showForm(true));
+        findViewById(R.id.btn_delete).setOnClickListener(v -> deleteSelected());
+        findViewById(R.id.btn_save).setOnClickListener(v -> savePerson());
+        findViewById(R.id.btn_cancel).setOnClickListener(v -> hideForm());
 
         // 人员列表点击事件
 //        lvPersonList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -334,6 +323,66 @@ public class PersonManagementActivity extends Activity {
     }
 
 
+    private List<Person> getSampleData() {
+        // 返回示例数据
+        List<Person> persons = new ArrayList<>();
+        persons.add(new Person("001", "张三", "技术部", "CARD001",null,null));
+        persons.add(new Person("002", "李四", "市场部", "CARD002",null,null));
+        return persons;
+    }
+
+    private void showForm(boolean isEdit) {
+        isEditMode = isEdit;
+        formContainer.setVisibility(View.VISIBLE);
+        rvPersonList.setVisibility(View.GONE);
+
+        if (isEdit) {
+            // 获取选中的person数据并填充表单
+            Person selected = adapter.getSelectedPerson();
+            if (selected != null) {
+                etPersonId.setText(selected.getId());
+                etName.setText(selected.getName());
+                spDepartment.setText(selected.getDepartment());
+                etCardNo.setText(selected.getCardNo());
+            }
+        } else {
+            // 清空表单
+            etPersonId.setText("");
+            etName.setText("");
+            spDepartment.setText("");
+            etCardNo.setText("");
+        }
+    }
+
+    private void hideForm() {
+        formContainer.setVisibility(View.GONE);
+        rvPersonList.setVisibility(View.VISIBLE);
+    }
+
+    private void savePerson() {
+        // 获取表单数据
+        String id = etPersonId.getText().toString();
+        String name = etName.getText().toString();
+        String dept = spDepartment.getText().toString();
+        String cardNo = etCardNo.getText().toString();
+
+        if (isEditMode) {
+            // 更新操作
+            adapter.updatePerson(new Person(id, name, dept, cardNo,null,null));
+        } else {
+            // 新增操作
+            adapter.addPerson(new Person(id, name, dept, cardNo,null,null));
+        }
+        hideForm();
+    }
+
+    private void deleteSelected() {
+        adapter.deleteSelectedPerson();
+    }
+
+
+
+
     /**
      * 初始化指纹设备
      */
@@ -354,6 +403,7 @@ public class PersonManagementActivity extends Activity {
     /**
      * 指纹SDK消息处理Handler
      */
+    @SuppressLint("HandlerLeak")
     private Handler m_fpsdkHandle = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -752,6 +802,7 @@ public class PersonManagementActivity extends Activity {
     }
 
     private final Handler m_appHandle = new Handler() {
+        @SuppressLint("HandlerLeak")
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {

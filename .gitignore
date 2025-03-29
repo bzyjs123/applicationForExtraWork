@@ -1,0 +1,14 @@
+# 编译生成的文件
+*.class
+*.jar
+*.war
+*.exe
+*.pyc
+*.iml
+
+# 忽略目录
+/target/
+/build/
+/dist/
+/.gradle/
+/.idea/

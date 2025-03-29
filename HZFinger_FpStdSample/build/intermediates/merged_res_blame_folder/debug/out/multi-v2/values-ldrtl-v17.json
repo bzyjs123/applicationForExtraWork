@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.HZFinger_FpStdSample-mergeDebugResources-29:/values-ldrtl-v17/values-ldrtl-v17.xml",
+            "outputFile": "com.HZFinger_FpStdSample-mergeDebugResources-30:/values-ldrtl-v17/values-ldrtl-v17.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-3\\f8727619aaef34b364b0e06f31758c83\\transformed\\material-1.10.0\\res\\values-ldrtl-v17\\values-ldrtl-v17.xml",
+                    "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-3\\9d9acdaee2d58f77af5889eac8ac4657\\transformed\\material-1.10.0\\res\\values-ldrtl-v17\\values-ldrtl-v17.xml",
                     "from": {
                         "startLines": "2,3",
                         "startColumns": "4,4",

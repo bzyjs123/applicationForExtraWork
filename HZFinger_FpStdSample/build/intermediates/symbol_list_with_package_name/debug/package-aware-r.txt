@@ -2970,6 +2970,7 @@ drawable ic_mtrl_chip_checked_black
 drawable ic_mtrl_chip_checked_circle
 drawable ic_mtrl_chip_close_circle
 drawable ic_nfc
+drawable ic_search_24dp
 drawable ic_search_black_24
 drawable m3_appbar_background
 drawable m3_avd_hide_password
@@ -3167,12 +3168,12 @@ id btnPersonManagement
 id btnRCDelete
 id btnSearch
 id btnVerify
+id btn_add
+id btn_cancel
 id btn_capture
-id btn_clear
 id btn_clear_sign
 id btn_delete
-id btn_export
-id btn_import
+id btn_edit
 id btn_save
 id btn_save_sign
 id btn_sign
@@ -3260,6 +3261,7 @@ id enterAlwaysCollapsed
 id et_card_no
 id et_name
 id et_person_id
+id et_search
 id exitUntilCollapsed
 id expand_activities_button
 id expanded_menu
@@ -3277,6 +3279,7 @@ id fixed
 id flip
 id floating
 id forever
+id form_container
 id fragment_container_view_tag
 id frost
 id fullscreen_header
@@ -3309,6 +3312,7 @@ id indeterminate
 id info
 id invisible
 id inward
+id is_pooling_container_tag
 id italic
 id item_touch_helper_previous_elevation
 id iv_fingerprint
@@ -3444,6 +3448,7 @@ id pathRelative
 id peekHeight
 id percent
 id pin
+id pooling_container_listener_holder_tag
 id position
 id postLayout
 id pressed
@@ -3462,6 +3467,7 @@ id right_icon
 id right_side
 id rounded
 id row_index_key
+id rv_person_list
 id save_non_transition_alpha
 id save_overlay_view
 id sawtooth
@@ -3573,7 +3579,11 @@ id transition_transform
 id triangle
 id tvANSITemp
 id tvISOTemp
+id tv_card
+id tv_dept
 id tv_fingerprint
+id tv_id
+id tv_name
 id tv_signature
 id unchecked
 id uniform
@@ -3730,6 +3740,7 @@ layout design_navigation_menu_item
 layout design_text_input_end_icon
 layout design_text_input_start_icon
 layout dialog_signature
+layout item_person
 layout m3_alert_dialog
 layout m3_alert_dialog_actions
 layout m3_alert_dialog_title
