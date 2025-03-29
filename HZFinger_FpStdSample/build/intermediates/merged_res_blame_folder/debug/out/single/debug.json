@@ -1,0 +1,78 @@
+[
+    {
+        "merged": "com.HZFinger_FpStdSample-merged_res-31:/layout-land_main.xml.flat",
+        "source": "com.HZFinger_FpStdSample-main-33:/layout-land/main.xml"
+    },
+    {
+        "merged": "com.HZFinger_FpStdSample-merged_res-31:/layout_main.xml.flat",
+        "source": "com.HZFinger_FpStdSample-main-33:/layout/main.xml"
+    },
+    {
+        "merged": "com.HZFinger_FpStdSample-merged_res-31:/mipmap-xhdpi_ic_launcher_round.png.flat",
+        "source": "com.HZFinger_FpStdSample-main-33:/mipmap-xhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.HZFinger_FpStdSample-merged_res-31:/mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "com.HZFinger_FpStdSample-main-33:/mipmap-xhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.HZFinger_FpStdSample-merged_res-31:/drawable_ic_launcher.png.flat",
+        "source": "com.HZFinger_FpStdSample-main-33:/drawable/ic_launcher.png"
+    },
+    {
+        "merged": "com.HZFinger_FpStdSample-merged_res-31:/mipmap-mdpi_ic_launcher_round.png.flat",
+        "source": "com.HZFinger_FpStdSample-main-33:/mipmap-mdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.HZFinger_FpStdSample-merged_res-31:/drawable_ic_nfc.xml.flat",
+        "source": "com.HZFinger_FpStdSample-main-33:/drawable/ic_nfc.xml"
+    },
+    {
+        "merged": "com.HZFinger_FpStdSample-merged_res-31:/mipmap-hdpi_ic_launcher.png.flat",
+        "source": "com.HZFinger_FpStdSample-main-33:/mipmap-hdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.HZFinger_FpStdSample-merged_res-31:/drawable_ic_launcher_round.png.flat",
+        "source": "com.HZFinger_FpStdSample-main-33:/drawable/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.HZFinger_FpStdSample-merged_res-31:/mipmap-hdpi_ic_launcher_round.png.flat",
+        "source": "com.HZFinger_FpStdSample-main-33:/mipmap-hdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.HZFinger_FpStdSample-merged_res-31:/xml_device_filter.xml.flat",
+        "source": "com.HZFinger_FpStdSample-main-33:/xml/device_filter.xml"
+    },
+    {
+        "merged": "com.HZFinger_FpStdSample-merged_res-31:/mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "com.HZFinger_FpStdSample-main-33:/mipmap-xxxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.HZFinger_FpStdSample-merged_res-31:/drawable_title_bottom_border.xml.flat",
+        "source": "com.HZFinger_FpStdSample-main-33:/drawable/title_bottom_border.xml"
+    },
+    {
+        "merged": "com.HZFinger_FpStdSample-merged_res-31:/layout_activity_person_management.xml.flat",
+        "source": "com.HZFinger_FpStdSample-main-33:/layout/activity_person_management.xml"
+    },
+    {
+        "merged": "com.HZFinger_FpStdSample-merged_res-31:/mipmap-mdpi_ic_launcher.png.flat",
+        "source": "com.HZFinger_FpStdSample-main-33:/mipmap-mdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.HZFinger_FpStdSample-merged_res-31:/mipmap-xxxhdpi_ic_launcher_round.png.flat",
+        "source": "com.HZFinger_FpStdSample-main-33:/mipmap-xxxhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.HZFinger_FpStdSample-merged_res-31:/layout_dialog_signature.xml.flat",
+        "source": "com.HZFinger_FpStdSample-main-33:/layout/dialog_signature.xml"
+    },
+    {
+        "merged": "com.HZFinger_FpStdSample-merged_res-31:/mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "com.HZFinger_FpStdSample-main-33:/mipmap-xxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.HZFinger_FpStdSample-merged_res-31:/mipmap-xxhdpi_ic_launcher_round.png.flat",
+        "source": "com.HZFinger_FpStdSample-main-33:/mipmap-xxhdpi/ic_launcher_round.png"
+    }
+]

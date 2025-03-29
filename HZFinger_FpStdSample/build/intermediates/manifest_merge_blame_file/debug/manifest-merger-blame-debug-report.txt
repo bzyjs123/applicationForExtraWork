@@ -1,0 +1,174 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.HZFinger_FpStdSample"
+4    android:versionCode="1"
+5    android:versionName="1.0" > <!-- SDK版本设置 -->
+6    <uses-sdk
+6-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:12:5-73
+7        android:minSdkVersion="28"
+7-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:12:15-41
+8        android:targetSdkVersion="34" />
+8-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:12:42-71
+9
+10    <!-- 硬件特性声明 -->
+11    <uses-feature android:name="android.hardware.usb.host" />
+11-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:8:5-62
+11-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:8:19-59
+12    <uses-feature
+12-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:9:5-81
+13        android:name="android.hardware.nfc"
+13-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:9:19-54
+14        android:required="true" />
+14-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:9:55-78
+15
+16    <!-- 普通应用可用的权限 -->
+17    <uses-permission android:name="android.permission.USB_PERMISSION" />
+17-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:15:5-72
+17-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:15:22-70
+18    <uses-permission android:name="android.permission.INTERNET" />
+18-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:16:5-66
+18-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:16:22-64
+19    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+19-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:17:5-80
+19-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:17:22-77
+20    <uses-permission
+20-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:18:5-19:38
+21        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+21-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:18:22-78
+22        android:maxSdkVersion="28" />
+22-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:19:9-35
+23    <uses-permission android:name="android.permission.NFC" />
+23-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:20:5-62
+23-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:20:22-59
+24
+25    <permission
+25-->[androidx.core:core:1.9.0] C:\Users\Administrator\.gradle\caches\transforms-3\4ab019a3ddfb7ce3703db84cb1361db5\transformed\core-1.9.0\AndroidManifest.xml:22:5-24:47
+26        android:name="com.HZFinger_FpStdSample.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+26-->[androidx.core:core:1.9.0] C:\Users\Administrator\.gradle\caches\transforms-3\4ab019a3ddfb7ce3703db84cb1361db5\transformed\core-1.9.0\AndroidManifest.xml:23:9-81
+27        android:protectionLevel="signature" />
+27-->[androidx.core:core:1.9.0] C:\Users\Administrator\.gradle\caches\transforms-3\4ab019a3ddfb7ce3703db84cb1361db5\transformed\core-1.9.0\AndroidManifest.xml:24:9-44
+28
+29    <uses-permission android:name="com.HZFinger_FpStdSample.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" /> <!-- 仅系统应用可用的权限（已移除） -->
+29-->[androidx.core:core:1.9.0] C:\Users\Administrator\.gradle\caches\transforms-3\4ab019a3ddfb7ce3703db84cb1361db5\transformed\core-1.9.0\AndroidManifest.xml:26:5-97
+29-->[androidx.core:core:1.9.0] C:\Users\Administrator\.gradle\caches\transforms-3\4ab019a3ddfb7ce3703db84cb1361db5\transformed\core-1.9.0\AndroidManifest.xml:26:22-94
+30    <!--
+31    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" tools:remove="true"/>
+32    <uses-permission android:name="android.permission.MOUNT_FORMAT_FILESYSTEMS" tools:remove="true"/>
+33    <uses-permission android:name="android.permission.SET_DEBUG_APP" tools:remove="true"/>
+34    -->
+35    <application
+35-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:30:5-52:19
+36        android:name="com.HZFinger_FpStdSample.MyApplication"
+36-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:31:9-38
+37        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+37-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:36:9-77
+38        android:debuggable="true"
+39        android:extractNativeLibs="false"
+40        android:icon="@drawable/ic_launcher"
+40-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:33:9-45
+41        android:label="@string/app_name"
+41-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:34:9-41
+42        android:requestLegacyExternalStorage="true"
+42-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:37:9-52
+43        android:testOnly="true"
+44        android:theme="@style/AppTheme" >
+44-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:32:9-40
+45        <activity
+45-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:39:9-48:20
+46            android:name="com.HZFinger_FpStdSample.HZFinger_FpStdSample"
+46-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:39:19-55
+47            android:exported="true" > <!-- android:screenOrientation="portrait"> -->
+47-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:40:13-36
+48            <intent-filter>
+48-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:41:13-44:29
+49                <action android:name="android.intent.action.MAIN" />
+49-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:42:17-69
+49-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:42:25-66
+50
+51                <category android:name="android.intent.category.LAUNCHER" />
+51-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:43:17-77
+51-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:43:27-74
+52            </intent-filter>
+53            <intent-filter>
+53-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:45:13-47:29
+54                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+54-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:46:17-90
+54-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:46:25-87
+55            </intent-filter>
+56        </activity>
+57        <activity
+57-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:50:9-51:20
+58            android:name="com.HZFinger_FpStdSample.PersonManagementActivity"
+58-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:50:19-59
+59            android:label="人员信息管理" >
+59-->C:\Users\Administrator\Desktop\work\HZFinger_FpStdSample\src\main\AndroidManifest.xml:50:60-82
+60        </activity>
+61
+62        <provider
+62-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Administrator\.gradle\caches\transforms-3\870579bb6a02c4a9fcf44cd76a070088\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
+63            android:name="androidx.startup.InitializationProvider"
+63-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Administrator\.gradle\caches\transforms-3\870579bb6a02c4a9fcf44cd76a070088\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:25:13-67
+64            android:authorities="com.HZFinger_FpStdSample.androidx-startup"
+64-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Administrator\.gradle\caches\transforms-3\870579bb6a02c4a9fcf44cd76a070088\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:26:13-68
+65            android:exported="false" >
+65-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Administrator\.gradle\caches\transforms-3\870579bb6a02c4a9fcf44cd76a070088\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:27:13-37
+66            <meta-data
+66-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Administrator\.gradle\caches\transforms-3\870579bb6a02c4a9fcf44cd76a070088\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
+67                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+67-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Administrator\.gradle\caches\transforms-3\870579bb6a02c4a9fcf44cd76a070088\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:30:17-75
+68                android:value="androidx.startup" />
+68-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Administrator\.gradle\caches\transforms-3\870579bb6a02c4a9fcf44cd76a070088\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:31:17-49
+69            <meta-data
+69-->[androidx.lifecycle:lifecycle-process:2.6.1] C:\Users\Administrator\.gradle\caches\transforms-3\c706d297154b222c9cc549f627f0de4c\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:29:13-31:52
+70                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+70-->[androidx.lifecycle:lifecycle-process:2.6.1] C:\Users\Administrator\.gradle\caches\transforms-3\c706d297154b222c9cc549f627f0de4c\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:30:17-78
+71                android:value="androidx.startup" />
+71-->[androidx.lifecycle:lifecycle-process:2.6.1] C:\Users\Administrator\.gradle\caches\transforms-3\c706d297154b222c9cc549f627f0de4c\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:31:17-49
+72            <meta-data
+72-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Administrator\.gradle\caches\transforms-3\20ba32dc80909f3fda98fb14ab6251ba\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:29:13-31:52
+73                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+73-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Administrator\.gradle\caches\transforms-3\20ba32dc80909f3fda98fb14ab6251ba\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:30:17-85
+74                android:value="androidx.startup" />
+74-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Administrator\.gradle\caches\transforms-3\20ba32dc80909f3fda98fb14ab6251ba\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:31:17-49
+75        </provider>
+76
+77        <receiver
+77-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Administrator\.gradle\caches\transforms-3\20ba32dc80909f3fda98fb14ab6251ba\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:34:9-52:20
+78            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+78-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Administrator\.gradle\caches\transforms-3\20ba32dc80909f3fda98fb14ab6251ba\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:35:13-76
+79            android:directBootAware="false"
+79-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Administrator\.gradle\caches\transforms-3\20ba32dc80909f3fda98fb14ab6251ba\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:36:13-44
+80            android:enabled="true"
+80-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Administrator\.gradle\caches\transforms-3\20ba32dc80909f3fda98fb14ab6251ba\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:37:13-35
+81            android:exported="true"
+81-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Administrator\.gradle\caches\transforms-3\20ba32dc80909f3fda98fb14ab6251ba\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:38:13-36
+82            android:permission="android.permission.DUMP" >
+82-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Administrator\.gradle\caches\transforms-3\20ba32dc80909f3fda98fb14ab6251ba\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:39:13-57
+83            <intent-filter>
+83-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Administrator\.gradle\caches\transforms-3\20ba32dc80909f3fda98fb14ab6251ba\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:40:13-42:29
+84                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+84-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Administrator\.gradle\caches\transforms-3\20ba32dc80909f3fda98fb14ab6251ba\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:17-91
+84-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Administrator\.gradle\caches\transforms-3\20ba32dc80909f3fda98fb14ab6251ba\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:25-88
+85            </intent-filter>
+86            <intent-filter>
+86-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Administrator\.gradle\caches\transforms-3\20ba32dc80909f3fda98fb14ab6251ba\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:43:13-45:29
+87                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+87-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Administrator\.gradle\caches\transforms-3\20ba32dc80909f3fda98fb14ab6251ba\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:17-85
+87-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Administrator\.gradle\caches\transforms-3\20ba32dc80909f3fda98fb14ab6251ba\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:25-82
+88            </intent-filter>
+89            <intent-filter>
+89-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Administrator\.gradle\caches\transforms-3\20ba32dc80909f3fda98fb14ab6251ba\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:46:13-48:29
+90                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+90-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Administrator\.gradle\caches\transforms-3\20ba32dc80909f3fda98fb14ab6251ba\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:17-88
+90-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Administrator\.gradle\caches\transforms-3\20ba32dc80909f3fda98fb14ab6251ba\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:25-85
+91            </intent-filter>
+92            <intent-filter>
+92-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Administrator\.gradle\caches\transforms-3\20ba32dc80909f3fda98fb14ab6251ba\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:49:13-51:29
+93                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+93-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Administrator\.gradle\caches\transforms-3\20ba32dc80909f3fda98fb14ab6251ba\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:17-95
+93-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Administrator\.gradle\caches\transforms-3\20ba32dc80909f3fda98fb14ab6251ba\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:25-92
+94            </intent-filter>
+95        </receiver>
+96    </application>
+97
+98</manifest>

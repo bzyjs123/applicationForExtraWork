@@ -1,0 +1,51 @@
+apply plugin: 'com.android.application'
+
+android {
+    namespace 'com.HZFinger_FpStdSample' // 替换为您的应用包名
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.HZFinger_FpStdSample"
+        minSdkVersion 28
+        targetSdkVersion 34
+
+        // 添加支持的ABI配置
+        ndk {
+            abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86_64'
+        }
+    }
+
+    // 添加分区存储兼容配置（Android 11强制启用）
+    android {
+        packagingOptions {
+            exclude 'META-INF/**'
+        }
+    }
+
+    sourceSets {
+        main {
+            res.srcDirs = ['src/main/res', 'src/main/res/mipmap-ldpi', 'src/main/res/mipmap-hdpi']
+            jniLibs.srcDirs 'libs'
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // 替换AndroidX依赖（Android 11推荐使用AndroidX）
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.activity:activity:1.8.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
+    implementation 'com.google.android.material:material:1.10.0'
+
+    // 添加必要的新版依赖
+    implementation 'androidx.core:core-ktx:1.6.0' // 如需Kotlin支持
+}
