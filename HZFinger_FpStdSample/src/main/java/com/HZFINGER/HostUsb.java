@@ -1,7 +1,5 @@
 package com.HZFINGER;
 
-import java.util.HashMap;
-
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -14,6 +12,8 @@ import android.hardware.usb.UsbEndpoint;
 import android.hardware.usb.UsbInterface;
 import android.hardware.usb.UsbManager;
 import android.util.Log;
+
+import java.util.HashMap;
 
 public class HostUsb 
 {

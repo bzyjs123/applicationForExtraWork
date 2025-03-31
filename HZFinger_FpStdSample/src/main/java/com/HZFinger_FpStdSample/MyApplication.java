@@ -2,7 +2,6 @@ package com.HZFinger_FpStdSample;
 
 import android.app.Application;
 import android.util.Log;
-import android.widget.Toast;
 
 public class MyApplication extends Application {
     private static final String TAG = "MyApplication";

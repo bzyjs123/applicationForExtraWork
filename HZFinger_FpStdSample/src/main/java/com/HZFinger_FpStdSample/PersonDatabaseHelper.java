@@ -1,5 +1,6 @@
 package com.HZFinger_FpStdSample;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -12,8 +13,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 人员信息数据库帮助类
@@ -24,7 +23,7 @@ public class PersonDatabaseHelper extends SQLiteOpenHelper {
     
     // 数据库名称和版本
     private static final String DATABASE_NAME = "person_info.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     
     // 表名
     public static final String TABLE_PERSON = "person";
@@ -36,6 +35,7 @@ public class PersonDatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_CARD_NO = "card_no"; // 卡号
     public static final String COLUMN_DEPARTMENT = "department"; // 部门
     public static final String COLUMN_FINGERPRINT = "fingerprint"; // 指纹数据
+    public static final String COLUMN_SIGNATURE = "signature"; // 签名数据
     
     // 创建表SQL语句
     private static final String CREATE_TABLE_PERSON = "CREATE TABLE " + TABLE_PERSON + " (" +
@@ -44,7 +44,8 @@ public class PersonDatabaseHelper extends SQLiteOpenHelper {
             COLUMN_NAME + " TEXT NOT NULL, " +
             COLUMN_CARD_NO + " TEXT, " +
             COLUMN_DEPARTMENT + " TEXT, " +
-            COLUMN_FINGERPRINT + " BLOB" +
+            COLUMN_FINGERPRINT + " BLOB, " +
+            COLUMN_SIGNATURE + " BLOB" +
             ");";
     
     private Context mContext;
@@ -62,9 +63,17 @@ public class PersonDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // 如果数据库版本升级，可以在这里处理升级逻辑
+        if (oldVersion < 2) {
+            // 添加签名字段
+            db.execSQL("ALTER TABLE " + TABLE_PERSON + " ADD COLUMN " + COLUMN_SIGNATURE + " BLOB");
+        }
         // 简单处理：删除旧表，创建新表
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PERSON);
         onCreate(db);
+    }
+
+    public SQLiteDatabase getOpenDatabase() {
+        return this.getWritableDatabase();
     }
     
     /**
@@ -76,7 +85,7 @@ public class PersonDatabaseHelper extends SQLiteOpenHelper {
      * @param fingerprint 指纹数据
      * @return 是否添加成功
      */
-    public boolean addPerson(String personId, String name, String cardNo, String department, byte[] fingerprint) {
+    public boolean addPerson(String personId, String name, String cardNo, String department, byte[] fingerprint, byte[] signature) {
         if (personId == null || personId.isEmpty() || name == null || name.isEmpty()) {
             return false;
         }
@@ -93,6 +102,7 @@ public class PersonDatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_CARD_NO, cardNo);
         values.put(COLUMN_DEPARTMENT, department);
         values.put(COLUMN_FINGERPRINT, fingerprint);
+        values.put(COLUMN_SIGNATURE, signature);
         
         long result = db.insert(TABLE_PERSON, null, values);
         db.close();
@@ -109,7 +119,7 @@ public class PersonDatabaseHelper extends SQLiteOpenHelper {
      * @param fingerprint 指纹数据
      * @return 是否更新成功
      */
-    public boolean updatePerson(String personId, String name, String cardNo, String department, byte[] fingerprint) {
+    public boolean updatePerson(String personId, String name, String cardNo, String department, byte[] fingerprint, byte[] signature) {
         if (personId == null || personId.isEmpty()) {
             return false;
         }
@@ -131,6 +141,10 @@ public class PersonDatabaseHelper extends SQLiteOpenHelper {
         
         if (fingerprint != null) {
             values.put(COLUMN_FINGERPRINT, fingerprint);
+        }
+        
+        if (signature != null) {
+            values.put(COLUMN_SIGNATURE, signature);
         }
         
         int rowsAffected = db.update(TABLE_PERSON, values, COLUMN_PERSON_ID + " = ?", new String[]{personId});
@@ -276,6 +290,7 @@ public class PersonDatabaseHelper extends SQLiteOpenHelper {
      * @param fingerprint 指纹数据
      * @return 人员编号，如果未找到则返回null
      */
+    @SuppressLint("Range")
     public String findPersonByFingerprint(byte[] fingerprint) {
         if (fingerprint == null) {
             return null;
@@ -292,5 +307,20 @@ public class PersonDatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return personId;
+    }
+
+    public boolean updatePersonSignature(String personId, byte[] signature) {
+        if (personId == null || personId.isEmpty() || signature == null) {
+            return false;
+        }
+        
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_SIGNATURE, signature);
+        
+        int rowsAffected = db.update(TABLE_PERSON, values, COLUMN_PERSON_ID + " = ?", new String[]{personId});
+        db.close();
+        
+        return rowsAffected > 0;
     }
 }
