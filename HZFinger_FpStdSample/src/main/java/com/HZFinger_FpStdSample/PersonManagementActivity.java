@@ -9,8 +9,10 @@ import static com.HZFinger_FpStdSample.HZFinger_FpStdSample.MESSAGE_SHOW_IMAGE;
 import static com.HZFinger_FpStdSample.HZFinger_FpStdSample.MESSAGE_SHOW_TEXT;
 import static com.HZFinger_FpStdSample.PersonDatabaseHelper.COLUMN_CARD_NO;
 import static com.HZFinger_FpStdSample.PersonDatabaseHelper.COLUMN_DEPARTMENT;
+import static com.HZFinger_FpStdSample.PersonDatabaseHelper.COLUMN_FINGERPRINT;
 import static com.HZFinger_FpStdSample.PersonDatabaseHelper.COLUMN_NAME;
 import static com.HZFinger_FpStdSample.PersonDatabaseHelper.COLUMN_PERSON_ID;
+import static com.HZFinger_FpStdSample.PersonDatabaseHelper.COLUMN_SIGNATURE;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -388,10 +390,25 @@ public class PersonManagementActivity extends Activity {
             // 获取选中的person数据并填充表单
             Person selected = adapter.getSelectedPerson();
             if (selected != null) {
-                etPersonId.setText(selected.getId());
-                etName.setText(selected.getName());
-                spDepartment.setText(selected.getDepartment());
-                etCardNo.setText(selected.getCardNo());
+                // 根据人员编号查询去库中查询详细数据
+                String id = selected.getId();
+                Cursor cursor = dbHelper.getPerson(id);
+                if (cursor.moveToFirst()) {
+                    int idIndex = cursor.getColumnIndex(COLUMN_PERSON_ID);
+                    int nameIndex = cursor.getColumnIndex(COLUMN_NAME);
+                    int deptIndex = cursor.getColumnIndex(COLUMN_DEPARTMENT);
+                    int cardIndex = cursor.getColumnIndex(COLUMN_CARD_NO);
+                    int signatureIndex = cursor.getColumnIndex(COLUMN_SIGNATURE);
+                    int fingerprintIndex = cursor.getColumnIndex(COLUMN_FINGERPRINT);
+                    do {
+                        etPersonId.setText(cursor.getString(idIndex));
+                        etName.setText(cursor.getString(nameIndex));
+                        spDepartment.setText(cursor.getString(deptIndex));
+                        etCardNo.setText(cursor.getString(cardIndex));
+                        etCardNo.setText(cursor.getString(signatureIndex));
+                        etCardNo.setText(cursor.getString(fingerprintIndex));
+                    } while (cursor.moveToNext());
+                }
             }
         } else {
             // 清空表单
