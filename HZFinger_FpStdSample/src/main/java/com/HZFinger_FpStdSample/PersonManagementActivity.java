@@ -9,15 +9,10 @@ import static com.HZFinger_FpStdSample.HZFinger_FpStdSample.MESSAGE_SHOW_IMAGE;
 import static com.HZFinger_FpStdSample.HZFinger_FpStdSample.MESSAGE_SHOW_TEXT;
 import static com.HZFinger_FpStdSample.PersonDatabaseHelper.COLUMN_CARD_NO;
 import static com.HZFinger_FpStdSample.PersonDatabaseHelper.COLUMN_DEPARTMENT;
-<<<<<<< HEAD
 import static com.HZFinger_FpStdSample.PersonDatabaseHelper.COLUMN_FINGERPRINT;
 import static com.HZFinger_FpStdSample.PersonDatabaseHelper.COLUMN_NAME;
 import static com.HZFinger_FpStdSample.PersonDatabaseHelper.COLUMN_PERSON_ID;
 import static com.HZFinger_FpStdSample.PersonDatabaseHelper.COLUMN_SIGNATURE;
-=======
-import static com.HZFinger_FpStdSample.PersonDatabaseHelper.COLUMN_NAME;
-import static com.HZFinger_FpStdSample.PersonDatabaseHelper.COLUMN_PERSON_ID;
->>>>>>> 144cf3bb13b6de7e05dd9b1822d0a5a3191645a0
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -426,12 +421,8 @@ public class PersonManagementActivity extends Activity {
         View titleView = ((ViewGroup)formContainer.getParent()).getChildAt(0);
         titleView.setVisibility(View.VISIBLE);
 
-<<<<<<< HEAD
         // 重置表单数据（包括签名和指纹）
         clearForm();  // 调用现有的清空方法
-
-=======
->>>>>>> 144cf3bb13b6de7e05dd9b1822d0a5a3191645a0
         formContainer.setVisibility(View.GONE);
         rvPersonList.setVisibility(View.VISIBLE);
 
