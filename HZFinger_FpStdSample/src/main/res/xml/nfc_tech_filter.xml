@@ -1,0 +1,31 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- 支持ISO 14443-4标准（银行卡/身份证） -->
+    <tech-list>
+        <tech>android.nfc.tech.IsoDep</tech>
+    </tech-list>
+
+    <!-- 支持NFC-A (Type A) 如Mifare Classic -->
+    <tech-list>
+        <tech>android.nfc.tech.NfcA</tech>
+    </tech-list>
+
+    <!-- 支持NFC-B (Type B) 如部分门禁卡 -->
+    <tech-list>
+        <tech>android.nfc.tech.NfcB</tech>
+    </tech-list>
+
+    <!-- 支持NDEF格式标签 -->
+    <tech-list>
+        <tech>android.nfc.tech.Ndef</tech>
+    </tech-list>
+
+    <!-- 支持Mifare Classic（公交卡常见类型） -->
+    <tech-list>
+        <tech>android.nfc.tech.MifareClassic</tech>
+    </tech-list>
+
+    <!-- 支持Mifare Ultralight -->
+    <tech-list>
+        <tech>android.nfc.tech.MifareUltralight</tech>
+    </tech-list>
+</resources>

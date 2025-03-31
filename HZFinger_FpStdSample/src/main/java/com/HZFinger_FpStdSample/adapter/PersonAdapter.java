@@ -3,6 +3,7 @@ package com.HZFinger_FpStdSample.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,9 +17,18 @@ import java.util.List;
 public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.ViewHolder> {
     private List<Person> persons;
     private int selectedPosition = -1;
+    private OnItemClickListener listener;
 
     public PersonAdapter(List<Person> persons) {
         this.persons = persons;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 
     @NonNull
@@ -39,9 +49,25 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.ViewHolder
             holder.tvDept.setText(person.getDepartment());
             holder.tvCard.setText(person.getCardNo());
 
+            // 设置复选框状态
+            holder.cbSelect.setChecked(position == selectedPosition);
+
             holder.itemView.setSelected(selectedPosition == adapterPosition);
             holder.itemView.setOnClickListener(v -> {
+                int oldSelectedPosition = selectedPosition;
                 selectedPosition = adapterPosition;
+
+                // 更新之前选中项和当前选中项的UI
+                if (oldSelectedPosition != -1) {
+                    notifyItemChanged(oldSelectedPosition);
+                }
+
+                notifyItemChanged(selectedPosition);
+
+                // 通知外部监听器
+                if (listener != null) {
+                    listener.onItemClick(position);
+                }
                 notifyDataSetChanged();
             });
         }
@@ -77,10 +103,12 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.ViewHolder
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
+        CheckBox cbSelect;
         TextView tvId, tvName, tvDept, tvCard;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            cbSelect = itemView.findViewById(R.id.cb_select);
             tvId = itemView.findViewById(R.id.tv_id);
             tvName = itemView.findViewById(R.id.tv_name);
             tvDept = itemView.findViewById(R.id.tv_dept);

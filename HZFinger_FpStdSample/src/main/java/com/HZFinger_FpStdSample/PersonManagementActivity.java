@@ -4,21 +4,21 @@ import static com.HZFinger_FpStdSample.HZFinger_FpStdSample.MESSAGE_CHKLIVE_DISA
 import static com.HZFinger_FpStdSample.HZFinger_FpStdSample.MESSAGE_ENABLE_BTN;
 import static com.HZFinger_FpStdSample.HZFinger_FpStdSample.MESSAGE_ID_ENABLED;
 import static com.HZFinger_FpStdSample.HZFinger_FpStdSample.MESSAGE_ID_SETTEXT;
-import static com.HZFinger_FpStdSample.HZFinger_FpStdSample.MESSAGE_LIST_END;
-import static com.HZFinger_FpStdSample.HZFinger_FpStdSample.MESSAGE_LIST_NEXT;
-import static com.HZFinger_FpStdSample.HZFinger_FpStdSample.MESSAGE_LIST_START;
-import static com.HZFinger_FpStdSample.HZFinger_FpStdSample.MESSAGE_SET_ID;
 import static com.HZFinger_FpStdSample.HZFinger_FpStdSample.MESSAGE_SHOW_BITMAP;
 import static com.HZFinger_FpStdSample.HZFinger_FpStdSample.MESSAGE_SHOW_IMAGE;
 import static com.HZFinger_FpStdSample.HZFinger_FpStdSample.MESSAGE_SHOW_TEXT;
+import static com.HZFinger_FpStdSample.PersonDatabaseHelper.COLUMN_CARD_NO;
+import static com.HZFinger_FpStdSample.PersonDatabaseHelper.COLUMN_DEPARTMENT;
+import static com.HZFinger_FpStdSample.PersonDatabaseHelper.COLUMN_NAME;
+import static com.HZFinger_FpStdSample.PersonDatabaseHelper.COLUMN_PERSON_ID;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
@@ -30,19 +30,15 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,9 +53,7 @@ import com.HZFinger_FpStdSample.model.Person;
 import com.HZFinger_FpStdSample.view.SignatureView;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -89,6 +83,9 @@ public class PersonManagementActivity extends Activity {
     private RecyclerView rvPersonList;
     private PersonAdapter adapter;
     private LinearLayout formContainer;
+
+    private SQLiteDatabase person_db;
+
     private boolean isEditMode = false;
 
     private HostUsb mHostUSb = null;
@@ -123,6 +120,7 @@ public class PersonManagementActivity extends Activity {
         // 初始化数据库
         if(dbHelper == null) {
             dbHelper = new PersonDatabaseHelper(this);
+            person_db = dbHelper.getOpenDatabase();
         }
 
         // 初始化列表
@@ -153,7 +151,12 @@ public class PersonManagementActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         m_cHAPI.CloseDevice();
-        dbHelper.close();
+
+        // 只在应用退出时关闭数据库
+        if (person_db != null && dbHelper != null) {
+            person_db.close();
+            dbHelper.close();
+        }
     }
 
     /**
@@ -186,14 +189,14 @@ public class PersonManagementActivity extends Activity {
         departmentList.add("销售部");
         departmentList.add("财务部");
         departmentList.add("人事部");
-        departmentAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, departmentList);
-        departmentAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        departmentAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, departmentList);
+//        departmentAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spDepartment.setAdapter(departmentAdapter);
 
-        // 初始化人员列表
-        personList = new ArrayList<>();
-        /*refreshPersonList();*/
-        personAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, personList);
+        // 设置点击监听器，确保点击时显示下拉框
+        spDepartment.setOnClickListener(v -> {
+            spDepartment.showDropDown();
+        });
     }
 
     /**
@@ -260,6 +263,15 @@ public class PersonManagementActivity extends Activity {
         findViewById(R.id.btn_save).setOnClickListener(v -> savePerson());
         findViewById(R.id.btn_cancel).setOnClickListener(v -> hideForm());
 
+        adapter.setOnItemClickListener(position -> {
+            // 可以在这里添加额外的点击处理逻辑
+        });
+
+        // 修改部门选择的监听器
+        spDepartment.setOnItemClickListener((parent, view, position, id) -> {
+            String selectedDepartment = (String) parent.getItemAtPosition(position);
+            spDepartment.setText(selectedDepartment);
+        });
         // 人员列表点击事件
 //        lvPersonList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            @Override
@@ -283,7 +295,7 @@ public class PersonManagementActivity extends Activity {
 
         // 创建PendingIntent
         mPendingIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), PendingIntent.FLAG_IMMUTABLE);
+                new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
     }
 
     @Override
@@ -305,11 +317,14 @@ public class PersonManagementActivity extends Activity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())) {
-            Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-            if (tag != null) {
-                String cardId = bytesToHex(tag.getId());
-                etCardNo.setText(cardId);
+        setIntent(intent);
+        if (intent.getAction() != null){
+            if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())) {
+                Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+                if (tag != null) {
+                    String cardId = bytesToHex(tag.getId());
+                    etCardNo.setText(cardId);
+                }
             }
         }
     }
@@ -326,15 +341,48 @@ public class PersonManagementActivity extends Activity {
     private List<Person> getSampleData() {
         // 返回示例数据
         List<Person> persons = new ArrayList<>();
-        persons.add(new Person("001", "张三", "技术部", "CARD001",null,null));
-        persons.add(new Person("002", "李四", "市场部", "CARD002",null,null));
+        try (Cursor cursor = dbHelper.getAllPersons()) {
+            if (cursor.moveToFirst()) {
+                int idIndex = cursor.getColumnIndex(COLUMN_PERSON_ID);
+                int nameIndex = cursor.getColumnIndex(COLUMN_NAME);
+                int deptIndex = cursor.getColumnIndex(COLUMN_DEPARTMENT);
+                int cardIndex = cursor.getColumnIndex(COLUMN_CARD_NO);
+                do {
+                    Person person = new Person();
+                    person.setId(cursor.getString(idIndex));
+                    person.setName(cursor.getString(nameIndex));
+                    person.setDepartment(cursor.getString(deptIndex));
+                    person.setCardNo(cursor.getString(cardIndex));
+                    persons.add(person);
+                } while (cursor.moveToNext());
+            }
+        }
         return persons;
     }
 
     private void showForm(boolean isEdit) {
         isEditMode = isEdit;
+
+        // 获取标题视图（假设它是父布局的第一个子视图）
+        View titleView = ((ViewGroup)formContainer.getParent()).getChildAt(0);
+
+        // 隐藏标题，这样表单就会直接显示在顶部
+        titleView.setVisibility(View.GONE);
+
+        // 显示表单，隐藏列表
         formContainer.setVisibility(View.VISIBLE);
         rvPersonList.setVisibility(View.GONE);
+
+        // 隐藏操作按钮区域和搜索框
+        findViewById(R.id.btn_add).setVisibility(View.GONE);
+        findViewById(R.id.btn_edit).setVisibility(View.GONE);
+        findViewById(R.id.btn_delete).setVisibility(View.GONE);
+        findViewById(R.id.et_search).setVisibility(View.GONE);
+
+        // 确保下拉框适配器正确设置
+        if (departmentAdapter != null) {
+            spDepartment.setAdapter(departmentAdapter);
+        }
 
         if (isEdit) {
             // 获取选中的person数据并填充表单
@@ -347,16 +395,26 @@ public class PersonManagementActivity extends Activity {
             }
         } else {
             // 清空表单
-            etPersonId.setText("");
-            etName.setText("");
-            spDepartment.setText("");
-            etCardNo.setText("");
+            clearForm();
         }
     }
 
     private void hideForm() {
+        // 获取标题视图并恢复显示
+        View titleView = ((ViewGroup)formContainer.getParent()).getChildAt(0);
+        titleView.setVisibility(View.VISIBLE);
+
+        // 重置表单数据（包括签名和指纹）
+        clearForm();  // 调用现有的清空方法
+
         formContainer.setVisibility(View.GONE);
         rvPersonList.setVisibility(View.VISIBLE);
+
+        // 恢复顶部按钮显示
+        findViewById(R.id.btn_add).setVisibility(View.VISIBLE);
+        findViewById(R.id.btn_edit).setVisibility(View.VISIBLE);
+        findViewById(R.id.btn_delete).setVisibility(View.VISIBLE);
+        findViewById(R.id.et_search).setVisibility(View.VISIBLE);
     }
 
     private void savePerson() {
@@ -379,26 +437,6 @@ public class PersonManagementActivity extends Activity {
     private void deleteSelected() {
         adapter.deleteSelectedPerson();
     }
-
-
-
-
-    /**
-     * 初始化指纹设备
-     */
-//    @SuppressLint("LongLogTag")
-//    private void initFingerprintDevice() {
-//
-//        try {
-//            m_hDevice = m_cHAPI.OpenDevice(true); // true表示使用USB通信模式
-//            if (!m_hDevice) {
-//                Toast.makeText(this, "指纹设备初始化失败", Toast.LENGTH_SHORT).show();
-//            }
-//        } catch (Exception e) {
-//            Log.e(TAG, "指纹设备初始化异常: " + e.getMessage(), e);
-//            Toast.makeText(this, "指纹设备初始化异常: " + e.getMessage(), Toast.LENGTH_LONG).show();
-//        }
-//    }
 
     /**
      * 指纹SDK消息处理Handler
@@ -433,6 +471,51 @@ public class PersonManagementActivity extends Activity {
                     currentFingerprint = (byte[]) msg.obj;
                     tvFingerprint.setText("已采集指纹");
                     Toast.makeText(PersonManagementActivity.this, "指纹采集成功", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+    };
+
+    @SuppressLint("HandlerLeak")
+    private final Handler m_appHandle = new Handler() {
+        @SuppressLint("HandlerLeak")
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MESSAGE_SHOW_IMAGE:
+                    ShowFingerBitmap ((byte[])msg.obj,msg.arg1,msg.arg2);
+                    break;
+                case MESSAGE_ENABLE_BTN:
+                    boolean bEnable = msg.arg1 == 1 ? true : false;
+                    boolean bOpen = msg.arg2 == 1 ? true : false;
+                    TextView id = (TextView) findViewById(R.id.idText);
+                    id.setEnabled(bEnable);
+                    Button btn = (Button) findViewById(R.id.btnVerify);
+                    btn.setEnabled(bEnable);
+                    btn = (Button) findViewById(R.id.btnSearch);
+                    btn.setEnabled(bEnable);
+                    btn = (Button) findViewById(R.id.btnDBRefresh);
+                    btn.setEnabled(bEnable);
+                    btn = (Button) findViewById(R.id.btnRCDelete);
+                    btn.setEnabled(bEnable);
+                    btn = (Button) findViewById(R.id.btnDBClear);
+                    btn.setEnabled(bEnable);
+                    btn = (Button) findViewById(R.id.btnEnroll);
+                    btn.setEnabled(bEnable);
+                    btn = (Button) findViewById(R.id.btnOpenDevice);
+                    btn.setEnabled(bOpen);
+                    break;
+                case MESSAGE_SHOW_BITMAP:
+                    ivFingerprint.setImageBitmap((Bitmap)msg.obj);
+                    break;
+                case MESSAGE_ID_ENABLED:
+                    btn = (Button) findViewById(msg.arg1);
+                    if (msg.arg2 != 0) btn.setEnabled(true);
+                    else btn.setEnabled(false);
+                    break;
+                case MESSAGE_ID_SETTEXT:
+                    btn = (Button) findViewById(msg.arg1);
+                    btn.setText(msg.arg2);
                     break;
             }
         }
@@ -583,14 +666,19 @@ public class PersonManagementActivity extends Activity {
      * 清空表单
      */
     private void clearForm() {
-        currentPersonId = "";
-        currentFingerprint = null;
+        // 清空基础字段
         etPersonId.setText("");
         etName.setText("");
         etCardNo.setText("");
-        spDepartment.setSelection(0);
+        spDepartment.setText("");
+
+        // 重置指纹状态
         tvFingerprint.setText("未采集指纹");
         ivFingerprint.setImageBitmap(null);
+
+        // 重置签名状态
+        tvSignature.setText("未签字");
+        ivSignature.setImageBitmap(null);
     }
 
     /**
@@ -768,6 +856,9 @@ public class PersonManagementActivity extends Activity {
 //        }
     }
 
+    /**
+     * 初始化指纹设备
+     */
     protected void OPEN_DEVICE() {
         String msg = "正在打开指纹设备...";
         m_fpsdkHandle.sendMessage(m_fpsdkHandle.obtainMessage(MESSAGE_SHOW_TEXT, 0, 0, msg));
@@ -800,50 +891,6 @@ public class PersonManagementActivity extends Activity {
             passTime = passTime - startTime;
         }
     }
-
-    private final Handler m_appHandle = new Handler() {
-        @SuppressLint("HandlerLeak")
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case MESSAGE_SHOW_IMAGE:
-                    ShowFingerBitmap ((byte[])msg.obj,msg.arg1,msg.arg2);
-                    break;
-                case MESSAGE_ENABLE_BTN:
-                    boolean bEnable = msg.arg1 == 1 ? true : false;
-                    boolean bOpen = msg.arg2 == 1 ? true : false;
-                    TextView id = (TextView) findViewById(R.id.idText);
-                    id.setEnabled(bEnable);
-                    Button btn = (Button) findViewById(R.id.btnVerify);
-                    btn.setEnabled(bEnable);
-                    btn = (Button) findViewById(R.id.btnSearch);
-                    btn.setEnabled(bEnable);
-                    btn = (Button) findViewById(R.id.btnDBRefresh);
-                    btn.setEnabled(bEnable);
-                    btn = (Button) findViewById(R.id.btnRCDelete);
-                    btn.setEnabled(bEnable);
-                    btn = (Button) findViewById(R.id.btnDBClear);
-                    btn.setEnabled(bEnable);
-                    btn = (Button) findViewById(R.id.btnEnroll);
-                    btn.setEnabled(bEnable);
-                    btn = (Button) findViewById(R.id.btnOpenDevice);
-                    btn.setEnabled(bOpen);
-                    break;
-                case MESSAGE_SHOW_BITMAP:
-                    ivFingerprint.setImageBitmap((Bitmap)msg.obj);
-                    break;
-                case MESSAGE_ID_ENABLED:
-                    btn = (Button) findViewById(msg.arg1);
-                    if (msg.arg2 != 0) btn.setEnabled(true);
-                    else btn.setEnabled(false);
-                    break;
-                case MESSAGE_ID_SETTEXT:
-                    btn = (Button) findViewById(msg.arg1);
-                    btn.setText(msg.arg2);
-                    break;
-            }
-        }
-    };
 
     private void ShowFingerBitmap(byte[] image, int width, int height) {
         if (width==0) return;

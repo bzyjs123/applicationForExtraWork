@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
+
 import java.io.File;
 
 public class HAPI {

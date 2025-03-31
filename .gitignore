@@ -8,7 +8,7 @@
 
 # 忽略目录
 /target/
-/build/
+/HZFinger_FpStdSample/build/
 /dist/
 /.gradle/
 /.idea/

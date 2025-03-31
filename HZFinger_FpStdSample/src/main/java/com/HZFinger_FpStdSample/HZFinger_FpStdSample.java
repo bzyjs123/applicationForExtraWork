@@ -1,16 +1,5 @@
 package com.HZFinger_FpStdSample;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FilenameFilter;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import com.HZFINGER.HostUsb;
-import com.HZFINGER.HAPI;
-import com.HZFINGER.LAPI;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -23,14 +12,13 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.Bitmap.Config;
+import android.graphics.Color;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import androidx.core.app.ActivityCompat;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -43,6 +31,19 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.core.app.ActivityCompat;
+
+import com.HZFINGER.HAPI;
+import com.HZFINGER.HostUsb;
+import com.HZFINGER.LAPI;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FilenameFilter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class HZFinger_FpStdSample extends Activity {
     /** Called when the activity is first created. */
